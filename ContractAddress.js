@@ -9,4 +9,4 @@ global.ContractAddress = CONFIG.isDevMode !== true ?
 //'';
 
 // Kovan
-'0xbdd1c4dd8f1fa89365d268b485dacbadda066120';
+'0x58699ad918e9fd264a2604d401cee487178c66cd';

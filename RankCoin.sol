@@ -135,25 +135,25 @@ contract RankCoin is ERC20 {
 	}
 	
 	// 토큰을 많이 가진 순서대로 유저의 ID 목록을 가져옵니다.
-	function getUserIdsByBalance() view public returns (uint256[]) {
-		uint256[] memory userIds = new uint256[](users.length);
+	function getUserIdsByBalance() view public returns (address[]) {
+		address[] memory _users = new address[](users.length);
 		
 		for (uint256 i = 0; i < users.length; i += 1) {
 			
 			uint256 balance = balances[users[i]];
 			
 			for (uint256 j = i; j > 0; j -= 1) {
-				if (balances[users[userIds[j - 1]]] < balance) {
-					userIds[j] = userIds[j - 1];
+				if (balances[_users[j - 1]] < balance) {
+					_users[j] = _users[j - 1];
 				} else {
 					break;
 				}
 			}
 			
-			userIds[j] = i;
+			_users[j] = users[i];
 		}
 		
-		return userIds;
+		return _users;
 	}
 	
 	// 이름을 지정합니다.
