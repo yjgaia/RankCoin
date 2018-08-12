@@ -83,6 +83,12 @@ contract RankCoin is ERC20 {
 		balances[msg.sender] = balances[msg.sender].sub(amount);
 		balances[to] = balances[to].add(amount);
 		
+		// 유저 주소 등록
+		if (userToIsExisted[to] != true) {
+			users.push(to);
+			userToIsExisted[to] = true;
+		}
+		
 		emit Transfer(msg.sender, to, amount);
 		
 		return true;
@@ -114,6 +120,12 @@ contract RankCoin is ERC20 {
 		
 		balances[from] = balances[from].sub(amount);
 		balances[to] = balances[to].add(amount);
+		
+		// 유저 주소 등록
+		if (userToIsExisted[to] != true) {
+			users.push(to);
+			userToIsExisted[to] = true;
+		}
 		
 		allowed[from][msg.sender] = allowed[from][msg.sender].sub(amount);
 		
