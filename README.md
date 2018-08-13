@@ -15,6 +15,7 @@ RankCoin은 보유량으로 랭킹을 매겨주는 [ERC20](https://github.com/et
 - ![테스트 여부](https://img.shields.io/badge/테스트%20여부-no-red.svg) `getRank(address user)` 특정 유저의 랭킹을 가져옵니다.
 - ![테스트 여부](https://img.shields.io/badge/테스트%20여부-yes-brightgreen.svg) `setName(string _name)` 이름을 지정합니다.
 - ![테스트 여부](https://img.shields.io/badge/테스트%20여부-yes-brightgreen.svg) `setMessage(string message)` 메시지를 지정합니다.
+- ![테스트 여부](https://img.shields.io/badge/테스트%20여부-no-red.svg) 각종 이벤트들
 
 ## 라이센스
 [MIT](LICENSE)
