@@ -3,8 +3,24 @@ global.ContractController = OBJECT({
 	init : (inner, self) => {
 		
 		let contract;
+		let eventMap = {};
+		
 		let setContract = self.setContract = (_contract) => {
 			contract = _contract;
+			
+			contract.allEvents((error, info) => {
+				
+				if (error === TO_DELETE) {
+					
+					let eventHandlers = eventMap[info.event];
+		
+					if (eventHandlers !== undefined) {
+						EACH(eventHandlers, (eventHandler) => {
+							eventHandler(info.args);
+						});
+					}
+				}
+			});
 		};
 		
 		let func = (f) => {
@@ -125,7 +141,7 @@ global.ContractController = OBJECT({
 				}
 				
 				// 정상 작동
-				else {
+				else if (callback !== undefined) {
 					
 					let retry = RAR(() => {
 						
@@ -153,6 +169,37 @@ global.ContractController = OBJECT({
 					});
 				}
 			};
+		};
+		
+		let on = self.on = (eventName, eventHandler) => {
+			//REQUIRED: eventName
+			//REQUIRED: eventHandler
+			
+			if (eventMap[eventName] === undefined) {
+				eventMap[eventName] = [];
+			}
+
+			eventMap[eventName].push(eventHandler);
+		};
+
+		let off = self.off = (eventName, eventHandler) => {
+			//REQUIRED: eventName
+			//OPTIONAL: eventHandler
+
+			if (eventMap[eventName] !== undefined) {
+
+				if (eventHandler !== undefined) {
+
+					REMOVE({
+						array: eventMap[eventName],
+						value: eventHandler
+					});
+				}
+
+				if (eventHandler === undefined || eventMap[eventName].length === 0) {
+					delete eventMap[eventName];
+				}
+			}
 		};
 		
 		// 토큰의 이름 반환
@@ -201,8 +248,8 @@ global.ContractController = OBJECT({
 		});
 		
 		// 토큰을 많이 가진 순서대로 유저의 ID 목록을 가져옵니다.
-		let getUserIdsByBalance = self.getUserIdsByBalance = func((callback) => {
-			contract.getUserIdsByBalance(callbackWrapper(callback));
+		let getUsersByBalance = self.getUsersByBalance = func((callback) => {
+			contract.getUsersByBalance(callbackWrapper(callback));
 		});
 		
 		// 이름을 지정합니다.

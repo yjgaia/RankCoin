@@ -6,11 +6,16 @@ import "./SafeMath.sol";
 contract RankCoin is ERC20 {
 	using SafeMath for uint256;
 	
+	event ChangeName(address indexed user, string name);
+	event ChangeMessage(address indexed user, string message);
+	
 	// 토큰 정보
 	string constant public NAME = "RankCoin";
 	string constant public SYMBOL = "RC";
 	uint8 constant public DECIMALS = 18;
 	uint256 constant public TOTAL_SUPPLY = 100000000000 * (10 ** uint256(DECIMALS));
+	
+	address public author;
 	
 	mapping(address => uint256) public balances;
 	mapping(address => mapping(address => uint256)) public allowed;
@@ -29,15 +34,11 @@ contract RankCoin is ERC20 {
 	
 	constructor() public {
 		
-		balances[msg.sender] = TOTAL_SUPPLY;
+		author = msg.sender;
 		
-		// 유저 주소 등록
-		if (userToIsExisted[msg.sender] != true) {
-			users.push(msg.sender);
-			userToIsExisted[msg.sender] = true;
-		}
+		balances[author] = TOTAL_SUPPLY;
 		
-		emit Transfer(0x0, msg.sender, TOTAL_SUPPLY);
+		emit Transfer(0x0, author, TOTAL_SUPPLY);
 	}
 	
 	// 주소를 잘못 사용하는 것인지 체크
@@ -84,7 +85,7 @@ contract RankCoin is ERC20 {
 		balances[to] = balances[to].add(amount);
 		
 		// 유저 주소 등록
-		if (userToIsExisted[to] != true) {
+		if (to != author && userToIsExisted[to] != true) {
 			users.push(to);
 			userToIsExisted[to] = true;
 		}
@@ -122,7 +123,7 @@ contract RankCoin is ERC20 {
 		balances[to] = balances[to].add(amount);
 		
 		// 유저 주소 등록
-		if (userToIsExisted[to] != true) {
+		if (to != author && userToIsExisted[to] != true) {
 			users.push(to);
 			userToIsExisted[to] = true;
 		}
@@ -134,8 +135,8 @@ contract RankCoin is ERC20 {
 		return true;
 	}
 	
-	// 토큰을 많이 가진 순서대로 유저의 ID 목록을 가져옵니다.
-	function getUserIdsByBalance() view public returns (address[]) {
+	// 토큰을 많이 가진 순서대로 유저 목록을 가져옵니다.
+	function getUsersByBalance() view public returns (address[]) {
 		address[] memory _users = new address[](users.length);
 		
 		for (uint256 i = 0; i < users.length; i += 1) {
@@ -156,13 +157,34 @@ contract RankCoin is ERC20 {
 		return _users;
 	}
 	
+	// 특정 유저의 랭킹을 가져옵니다.
+	function getRank(address user) view public returns (uint256) {
+		
+		uint256 rank = 0;
+		uint256 balance = balances[user];
+		
+		for (uint256 i = 0; i < users.length; i += 1) {
+			if (balances[users[i]] > balance) {
+				rank += 1;
+			}
+		}
+		
+		return rank;
+	}
+	
 	// 이름을 지정합니다.
 	function setName(string _name) public {
+		
 		names[msg.sender] = _name;
+		
+		emit ChangeName(msg.sender, _name);
 	}
 	
 	// 메시지를 지정합니다.
 	function setMessage(string message) public {
+		
 		messages[msg.sender] = message;
+		
+		emit ChangeMessage(msg.sender, message);
 	}
 }

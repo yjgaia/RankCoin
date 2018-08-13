@@ -4,9 +4,5 @@ global.ContractAddress = CONFIG.isDevMode !== true ?
 '' :
 
 // 개발 모드
-
-// Ropsten
-//'';
-
 // Kovan
-'0x58699ad918e9fd264a2604d401cee487178c66cd';
+'0xa6e90a28f446d3639916959b6087f68d9b83fca9';
