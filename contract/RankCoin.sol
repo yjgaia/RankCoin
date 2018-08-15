@@ -1,9 +1,10 @@
 pragma solidity ^0.4.24;
 
 import "./ERC20.sol";
+import "./ERC165.sol";
 import "./SafeMath.sol";
 
-contract RankCoin is ERC20 {
+contract RankCoin is ERC20, ERC165 {
 	using SafeMath for uint256;
 	
 	event ChangeName(address indexed user, string name);
@@ -186,5 +187,15 @@ contract RankCoin is ERC20 {
 		messages[msg.sender] = message;
 		
 		emit ChangeMessage(msg.sender, message);
+	}
+	
+	//ERC165: 주어진 인터페이스가 구현되어 있는지 확인합니다.
+	function supportsInterface(bytes4 interfaceID) external view returns (bool) {
+		return
+			// ERC165
+			interfaceID == this.supportsInterface.selector ||
+			// ERC20
+			interfaceID == 0x942e8b22 ||
+			interfaceID == 0x36372b07;
 	}
 }
