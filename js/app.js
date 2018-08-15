@@ -12,7 +12,7 @@ RUN(() => {
 					height : 40,
 					marginBottom : -8
 				},
-				src : 'icon.png'
+				src : 'resource/icon.png'
 			}),
 			spacing : 10,
 			title : 'RankCoin'
