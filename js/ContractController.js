@@ -26,7 +26,7 @@ global.ContractController = OBJECT({
 		let func = (f) => {
 			return function() {
 				if (WalletManager.checkIsEnable() !== true) {
-					alert('메타마스크가 잠겨있습니다.');
+					console.error('메타마스크가 잠겨있습니다.');
 				} else {
 					f.apply(undefined, arguments);
 				}
