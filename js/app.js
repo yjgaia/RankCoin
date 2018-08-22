@@ -42,7 +42,7 @@ RUN(() => {
 			padding : 10
 		},
 		c : [
-		'내 지갑 주소: ' + WalletManager.getWalletAddress(),
+		'내 지갑 주소: ' + (WalletManager.getWalletAddress() === undefined ? 'MetaMask에 로그인해주세요.' : WalletManager.getWalletAddress()),
 		myCoinPanel = DIV(),
 		myNamePanel = DIV(),
 		myMessagePanel = DIV(),
@@ -83,108 +83,133 @@ RUN(() => {
 		console.log('Approval', params);
 	});
 	
-	NEXT([
-	(next) => {
-		ContractController.balanceOf(WalletManager.getWalletAddress(), (balanceStr) => {
-			
-			if (balanceStr.length > 18) {
-				let index = balanceStr.length - 18;
-				balanceStr = balanceStr.substring(0, index) + '.' + balanceStr.substring(index);
-			} else {
-				let appendix = '0.';
-				REPEAT(18 - balanceStr.length, () => {
-					appendix += '0';
-				});
-				balanceStr = appendix + balanceStr;
-			}
-			
-			let str = balanceStr.split('.');
-			if (str[0].length >= 5) {
-				str[0] = str[0].replace(/(\d)(?=(\d{3})+$)/g, '$1,');
-			}
-			if (str[1] && str[1].length >= 5) {
-				str[1] = str[1].replace(/(\d{3})/g, '$1 ');
-			}
-			
-			myCoinPanel.append(DIV({
-				c : ['내 보유 코인: ', str[0], '.', SPAN({
-					style : {
-						fontSize : '0.5em'
-					},
-					c : str[1]
-				})]
-			}));
-			next();
+	if (WalletManager.checkIsLocked() === true) {
+		UUI.ALERT({
+			style : {
+				backgroundColor : '#fff',
+				color : '#000',
+				padding : 10,
+				border : '1px solid #ccc'
+			},
+			buttonStyle : {
+				marginTop : 10,
+				padding : 10,
+				border : '1px solid #ccc',
+				borderRadius : 5
+			},
+			msg : [IMG({
+				src : 'resource/metamask.png'
+			}), P({
+				c : 'MetaMask가 잠겨있습니다.\nMetaMask에 로그인해주시기 바랍니다.'
+			})]
 		});
-	},
+	}
 	
-	(next) => {
-		return () => {
-			
-			ContractController.getName(WalletManager.getWalletAddress(), (name) => {
-				if (name === '') {
-					myNamePanel.append(SPAN({
-						c : '이름이 지정되어 있지 않습니다.'
-					}));
-				} else {
-					myNamePanel.append(SPAN({
-						c : '내 이름: ' + name
-					}));
-				}
-				myNamePanel.append(A({
-					style : {
-						marginLeft : 5,
-						color : '#3366CC',
-						fontWeight : 'bold'
-					},
-					c : '이름 변경',
-					on : {
-						tap : () => {
-							let name = prompt('이름을 입력해주세요.');
-							if (name !== TO_DELETE) {
-								ContractController.setName(name);
-							}
-						}
-					}
-				}));
+	else {
+		
+		NEXT([
+		(next) => {
+			ContractController.balanceOf(WalletManager.getWalletAddress(), (balanceStr) => {
 				
+				if (balanceStr.length > 18) {
+					let index = balanceStr.length - 18;
+					balanceStr = balanceStr.substring(0, index) + '.' + balanceStr.substring(index);
+				} else {
+					let appendix = '0.';
+					REPEAT(18 - balanceStr.length, () => {
+						appendix += '0';
+					});
+					balanceStr = appendix + balanceStr;
+				}
+				
+				let str = balanceStr.split('.');
+				if (str[0].length >= 5) {
+					str[0] = str[0].replace(/(\d)(?=(\d{3})+$)/g, '$1,');
+				}
+				if (str[1] && str[1].length >= 5) {
+					str[1] = str[1].replace(/(\d{3})/g, '$1 ');
+				}
+				
+				myCoinPanel.append(DIV({
+					c : ['내 보유 코인: ', str[0], '.', SPAN({
+						style : {
+							fontSize : '0.5em'
+						},
+						c : str[1]
+					})]
+				}));
 				next();
 			});
-		};
-	},
-	
-	() => {
-		return () => {
-			
-			ContractController.getMessage(WalletManager.getWalletAddress(), (message) => {
-				if (message === '') {
-					myMessagePanel.append(SPAN({
-						c : '메시지가 지정되어 있지 않습니다.'
-					}));
-				} else {
-					myMessagePanel.append(SPAN({
-						c : '내 메시지: ' + message
-					}));
-				}
-				myMessagePanel.append(A({
-					style : {
-						marginLeft : 5,
-						color : '#3366CC',
-						fontWeight : 'bold'
-					},
-					c : '메시지 변경',
-					on : {
-						tap : () => {
-							let message = prompt('메시지를 입력해주세요.');
-							if (message !== TO_DELETE) {
-								ContractController.setMessage(message);
+		},
+		
+		(next) => {
+			return () => {
+				
+				ContractController.getName(WalletManager.getWalletAddress(), (name) => {
+					if (name === '') {
+						myNamePanel.append(SPAN({
+							c : '이름이 지정되어 있지 않습니다.'
+						}));
+					} else {
+						myNamePanel.append(SPAN({
+							c : '내 이름: ' + name
+						}));
+					}
+					myNamePanel.append(A({
+						style : {
+							marginLeft : 5,
+							color : '#3366CC',
+							fontWeight : 'bold'
+						},
+						c : '이름 변경',
+						on : {
+							tap : () => {
+								let name = prompt('이름을 입력해주세요.');
+								if (name !== TO_DELETE) {
+									ContractController.setName(name);
+								}
 							}
 						}
+					}));
+					
+					next();
+				});
+			};
+		},
+		
+		() => {
+			return () => {
+				
+				ContractController.getMessage(WalletManager.getWalletAddress(), (message) => {
+					if (message === '') {
+						myMessagePanel.append(SPAN({
+							c : '메시지가 지정되어 있지 않습니다.'
+						}));
+					} else {
+						myMessagePanel.append(SPAN({
+							c : '내 메시지: ' + message
+						}));
 					}
-				}));
-			});
-		};
-	}]);
+					myMessagePanel.append(A({
+						style : {
+							marginLeft : 5,
+							color : '#3366CC',
+							fontWeight : 'bold'
+						},
+						c : '메시지 변경',
+						on : {
+							tap : () => {
+								let message = prompt('메시지를 입력해주세요.');
+								if (message !== TO_DELETE) {
+									ContractController.setMessage(message);
+								}
+							}
+						}
+					}));
+				});
+			};
+		}]);
+	}
 	
 	let loadingRankPanel;
 	let rankList = UUI.PANEL({
