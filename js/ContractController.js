@@ -26,7 +26,7 @@ global.ContractController = OBJECT({
 		let func = (f) => {
 			return function() {
 				if (WalletManager.checkIsEnable() !== true) {
-					console.error('메타마스크가 잠겨있습니다.');
+					location.href = 'metamask.html';
 				} else {
 					f.apply(undefined, arguments);
 				}
@@ -270,6 +270,11 @@ global.ContractController = OBJECT({
 		// 메시지를 가져옵니다.
 		let getMessage = self.getMessage = func((user, callback) => {
 			contract.messages(user, callbackWrapper(callback));
+		});
+		
+		// 특정 유저의 랭킹을 가져옵니다.
+		let getRank = self.getRank = func((user, callback) => {
+			contract.getRank(user, callbackWrapper(callback));
 		});
 	}
 });

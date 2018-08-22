@@ -161,7 +161,7 @@ contract RankCoin is ERC20, ERC165 {
 	// 특정 유저의 랭킹을 가져옵니다.
 	function getRank(address user) view public returns (uint256) {
 		
-		uint256 rank = 0;
+		uint256 rank = 1;
 		uint256 balance = balances[user];
 		
 		for (uint256 i = 0; i < users.length; i += 1) {

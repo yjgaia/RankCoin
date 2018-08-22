@@ -23,7 +23,7 @@ RUN(() => {
 		style : {
 			padding : 10
 		},
-		c : ['RankCoin은 보유량으로 랭킹을 매겨주는 ERC20 코인입니다.\n그냥 만들어 봤습니다.', A({
+		c : ['RankCoin은 보유량으로 랭킹을 매겨주는 ERC-20 코인입니다.\n그냥 만들어 봤습니다.', A({
 			style : {
 				marginLeft : 5,
 				color : '#3366CC',
@@ -68,7 +68,19 @@ RUN(() => {
 	}).appendTo(BODY);
 	
 	ContractController.on('ChangeName', (params) => {
-		console.log(params);
+		console.log('ChangeName', params);
+	});
+	
+	ContractController.on('ChangeMessage', (params) => {
+		console.log('ChangeMessage', params);
+	});
+	
+	ContractController.on('Transfer', (params) => {
+		console.log('Transfer', params);
+	});
+	
+	ContractController.on('Approval', (params) => {
+		console.log('Approval', params);
 	});
 	
 	NEXT([
@@ -202,6 +214,8 @@ RUN(() => {
 		loadingRankPanel.remove();
 		
 		EACH(users, (user, rank) => {
+		
+			ContractController.getRank(user, console.log);
 			
 			let fontSize = 25 - rank;
 			if (fontSize < 5) {

@@ -12,10 +12,10 @@ RankCoin은 보유량으로 랭킹을 매겨주는 [ERC20](https://github.com/et
 - ![테스트 여부](https://img.shields.io/badge/테스트%20여부-yes-brightgreen.svg) `allowance(address user, address spender)` spender에 인출을 허락한 토큰의 양을 반환합니다.
 - ![테스트 여부](https://img.shields.io/badge/테스트%20여부-yes-brightgreen.svg) `transferFrom(address from, address to, uint256 amount)`허락된 spender가 from으로부터 amount만큼의 토큰을 to에게 전송합니다.
 - ![테스트 여부](https://img.shields.io/badge/테스트%20여부-yes-brightgreen.svg) `getUsersByBalance()` 토큰을 많이 가진 순서대로 유저의 ID 목록을 가져옵니다.
-- ![테스트 여부](https://img.shields.io/badge/테스트%20여부-no-red.svg) `getRank(address user)` 특정 유저의 랭킹을 가져옵니다.
+- ![테스트 여부](https://img.shields.io/badge/테스트%20여부-yes-brightgreen.svg) `getRank(address user)` 특정 유저의 랭킹을 가져옵니다.
 - ![테스트 여부](https://img.shields.io/badge/테스트%20여부-yes-brightgreen.svg) `setName(string _name)` 이름을 지정합니다.
 - ![테스트 여부](https://img.shields.io/badge/테스트%20여부-yes-brightgreen.svg) `setMessage(string message)` 메시지를 지정합니다.
-- ![테스트 여부](https://img.shields.io/badge/테스트%20여부-no-red.svg) 각종 이벤트들
+- ![테스트 여부](https://img.shields.io/badge/테스트%20여부-yes-brightgreen.svg) 각종 이벤트들
 
 ## 라이센스
 [MIT](LICENSE)
