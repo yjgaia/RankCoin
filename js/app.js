@@ -262,11 +262,13 @@ RUN(() => {
 					marginBottom : 30,
 					fontSize : fontSize
 				},
-				c : ['#' + (rank + 1), nameWrapper = SPAN({
+				c : ['#' + (rank + 1), nameWrapper = A({
 					style : {
 						marginLeft : 10
 					},
-					c : user
+					c : user,
+					target : 'blank',
+					href : 'http://etherscan.io/address/' + user
 				})]
 			}).appendTo(rankList);
 			
