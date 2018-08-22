@@ -1,5 +1,5 @@
 # RankCoin
-RankCoin은 보유량으로 랭킹을 매겨주는 [ERC20](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-20.md) 코인입니다.
+RankCoin은 보유량으로 랭킹을 매겨주는 [ERC-20](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-20.md) 코인입니다.
 
 ## 기능 목록
 - ![테스트 여부](https://img.shields.io/badge/테스트%20여부-yes-brightgreen.svg) `name()` 토큰의 이름 반환

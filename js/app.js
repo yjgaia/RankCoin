@@ -186,13 +186,22 @@ RUN(() => {
 		};
 	}]);
 	
-	let width = WIN_WIDTH() / 3;
-	
 	let loadingRankPanel;
 	let rankList = UUI.PANEL({
 		style : {
-			flt : 'left',
-			width : width
+			onDisplayResize : (width, height) => {
+				if (width < 1024) {
+					return {
+						width : '100%',
+						flt : 'none'
+					};
+				} else {
+					return {
+						width : '50%',
+						flt : 'left'
+					};
+				}
+			}
 		},
 		contentStyle : {
 			padding : 10
@@ -308,30 +317,21 @@ RUN(() => {
 		});
 	});
 	
-	let exchangeList = UUI.PANEL({
-		style : {
-			flt : 'left',
-			width : width
-		},
-		contentStyle : {
-			padding : 10
-		},
-		c : [H2({
-			style : {
-				fontSize : 20,
-				fontWeight : 'bold',
-				marginBottom : 10
-			},
-			c : '거래'
-		}), P({
-			c : '거래 기능은 개발중입니다.'
-		})]
-	}).appendTo(BODY);
-	
 	let bannerList = UUI.PANEL({
 		style : {
-			flt : 'left',
-			width : width
+			onDisplayResize : (width, height) => {
+				if (width < 1024) {
+					return {
+						width : '100%',
+						flt : 'none'
+					};
+				} else {
+					return {
+						width : '50%',
+						flt : 'left'
+					};
+				}
+			}
 		},
 		contentStyle : {
 			padding : 10
@@ -343,7 +343,18 @@ RUN(() => {
 				marginBottom : 10
 			},
 			c : '배너'
+		}), DIV({
+			c : A({
+				c : IMG({
+					src : 'resource/banner/tokenroll.png'
+				}),
+				target : '_blank',
+				href : 'https://tokenroll.net/'
+			})
 		}), P({
+			style : {
+				marginTop : 10
+			},
 			c : ['RankCoin을 사용하는 서비스나 게임의 배너 광고를 꽁짜로 달아드립니다.\n문의 : ', A({
 				style : {
 					color : '#3366CC'
