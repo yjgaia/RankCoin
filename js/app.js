@@ -46,6 +46,9 @@ RUN(() => {
 		myCoinPanel = DIV(),
 		myNamePanel = DIV(),
 		myMessagePanel = DIV(),
+		P({
+			c : '이름이나 메시지를 지정하면 랭킹에도 뜨게 됩니다.'
+		}),
 		A({
 			style : {
 				color : '#3366CC',
