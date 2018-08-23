@@ -258,7 +258,7 @@ RUN(() => {
 		
 			ContractController.getRank(user, console.log);
 			
-			let fontSize = 25 - rank;
+			let fontSize = 25 - rank / 2;
 			if (fontSize < 5) {
 				fontSize = 5;
 			}
