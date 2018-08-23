@@ -1,4 +1,4 @@
-RUN(() => {
+window.addEventListener('load', () => {
 	
 	H1({
 		style : {
