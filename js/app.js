@@ -23,12 +23,16 @@ RUN(() => {
 		style : {
 			padding : 10
 		},
-		c : ['RankCoin은 보유량으로 랭킹을 매겨주는 ERC-20 코인입니다.\n그냥 만들어 봤습니다.', A({
+		c : ['RankCoin은 보유량으로 랭킹을 매겨주는 ERC-20 코인입니다.', BR(), A({
+			target : '_blank',
+			href : 'https://etherscan.io/token/' + ContractAddress,
+			c : '토큰 계약 주소: ' + ContractAddress
+		}), BR(), A({
 			style : {
-				marginLeft : 5,
 				color : '#3366CC',
 				fontWeight : 'bold'
 			},
+			target : '_blank',
 			href : 'https://github.com/Hanul/RankCoin',
 			c : '소스코드'
 		})]
