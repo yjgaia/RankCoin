@@ -50,9 +50,11 @@ window.addEventListener('load', () => {
 	let myNamePanel;
 	let myMessagePanel;
 	
+	let myWalletInfo = DIV().appendTo(BODY);
+	
 	WalletManager.getWalletAddress((walletAddress) => {
 		
-		P({
+		myWalletInfo.append(P({
 			style : {
 				padding : 10
 			},
@@ -83,7 +85,7 @@ window.addEventListener('load', () => {
 					}
 				}
 			})]
-		}).appendTo(BODY);
+		}));
 	});
 	
 	ContractController.on('ChangeName', (params) => {
