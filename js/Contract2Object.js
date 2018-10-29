@@ -120,11 +120,10 @@ global.Contract2Object = CLASS((cls) => {
 										
 										// output이 1개인 경우
 										else if (funcInfo.outputs.length === 1) {
-											
 											if (funcInfo.outputs[0].type === 'string') {
 												callback(result.toString(10));
 											} else if (result.toNumber !== undefined) {
-												callback(result.toNumber());
+												callback(result.toNumber(), result.toString(10));
 											} else {
 												callback(result);
 											}
@@ -134,11 +133,16 @@ global.Contract2Object = CLASS((cls) => {
 										else if (funcInfo.outputs.length > 1) {
 											
 											EACH(funcInfo.outputs, (output, i) => {
-												
 												if (output.type === 'string') {
 													result[i] = result[i].toString(10);
 												} else if (result.toNumber !== undefined) {
 													result[i] = result[i].toNumber();
+												}
+											});
+											
+											EACH(funcInfo.outputs, (output, i) => {
+												if (output.type !== 'string' && result.toNumber !== undefined) {
+													result.push(result[i].toString(10));
 												}
 											});
 											

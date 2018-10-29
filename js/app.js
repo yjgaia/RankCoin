@@ -138,7 +138,7 @@ RUN(() => {
 				
 				NEXT([
 				(next) => {
-					RankCoinContract.balanceOf(walletAddress, (balanceStr) => {
+					RankCoinContract.balanceOf(walletAddress, (balance, balanceStr) => {
 						
 						if (balanceStr.length > 18) {
 							let index = balanceStr.length - 18;
@@ -305,7 +305,7 @@ RUN(() => {
 			
 			NEXT([
 			(next) => {
-				RankCoinContract.balanceOf(user, (balanceStr) => {
+				RankCoinContract.balanceOf(user, (balance, balanceStr) => {
 					
 					if (balanceStr.length > 18) {
 						let index = balanceStr.length - 18;
