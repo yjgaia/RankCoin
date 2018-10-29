@@ -25,8 +25,8 @@ RUN(() => {
 		},
 		c : ['RankCoin은 보유량으로 랭킹을 매겨주는 ERC-20 코인입니다.', BR(), A({
 			target : '_blank',
-			href : 'https://etherscan.io/token/' + ContractAddress,
-			c : '토큰 계약 주소: ' + ContractAddress
+			href : 'https://etherscan.io/token/' + RankCoinContract.getAddress(),
+			c : '토큰 계약 주소: ' + RankCoinContract.getAddress()
 		}), BR(), A({
 			style : {
 				color : '#3366CC',
@@ -79,7 +79,10 @@ RUN(() => {
 							let amount = prompt('몇 코인을 전송하시겠습니까?');
 							if (amount !== TO_DELETE) {
 								amount *= Math.pow(10, 18);
-								ContractController.transfer(to, amount);
+								RankCoinContract.transfer({
+									to : to,
+									amount : amount
+								});
 							}
 						}
 					}
@@ -88,19 +91,19 @@ RUN(() => {
 		}));
 	});
 	
-	ContractController.on('ChangeName', (params) => {
+	RankCoinContract.on('ChangeName', (params) => {
 		console.log('ChangeName', params);
 	});
 	
-	ContractController.on('ChangeMessage', (params) => {
+	RankCoinContract.on('ChangeMessage', (params) => {
 		console.log('ChangeMessage', params);
 	});
 	
-	ContractController.on('Transfer', (params) => {
+	RankCoinContract.on('Transfer', (params) => {
 		console.log('Transfer', params);
 	});
 	
-	ContractController.on('Approval', (params) => {
+	RankCoinContract.on('Approval', (params) => {
 		console.log('Approval', params);
 	});
 	
@@ -135,7 +138,7 @@ RUN(() => {
 				
 				NEXT([
 				(next) => {
-					ContractController.balanceOf(walletAddress, (balanceStr) => {
+					RankCoinContract.balanceOf(walletAddress, (balanceStr) => {
 						
 						if (balanceStr.length > 18) {
 							let index = balanceStr.length - 18;
@@ -171,7 +174,7 @@ RUN(() => {
 				(next) => {
 					return () => {
 						
-						ContractController.getName(walletAddress, (name) => {
+						RankCoinContract.names(walletAddress, (name) => {
 							if (name === '') {
 								myNamePanel.append(SPAN({
 									c : '이름이 지정되어 있지 않습니다.'
@@ -192,7 +195,7 @@ RUN(() => {
 									tap : () => {
 										let name = prompt('이름을 입력해주세요.');
 										if (name !== TO_DELETE) {
-											ContractController.setName(name);
+											RankCoinContract.setName(name);
 										}
 									}
 								}
@@ -206,7 +209,7 @@ RUN(() => {
 				() => {
 					return () => {
 						
-						ContractController.getMessage(walletAddress, (message) => {
+						RankCoinContract.messages(walletAddress, (message) => {
 							if (message === '') {
 								myMessagePanel.append(SPAN({
 									c : '메시지가 지정되어 있지 않습니다.'
@@ -227,7 +230,7 @@ RUN(() => {
 									tap : () => {
 										let message = prompt('메시지를 입력해주세요.');
 										if (message !== TO_DELETE) {
-											ContractController.setMessage(message);
+											RankCoinContract.setMessage(message);
 										}
 									}
 								}
@@ -271,13 +274,13 @@ RUN(() => {
 		})]
 	}).appendTo(BODY);
 	
-	ContractController.getUsersByBalance((users) => {
+	RankCoinContract.getUsersByBalance((users) => {
 		
 		loadingRankPanel.remove();
 		
 		EACH(users, (user, rank) => {
 		
-			ContractController.getRank(user, console.log);
+			RankCoinContract.getRank(user, console.log);
 			
 			let fontSize = 25 - rank / 2;
 			if (fontSize < 5) {
@@ -302,7 +305,7 @@ RUN(() => {
 			
 			NEXT([
 			(next) => {
-				ContractController.balanceOf(user, (balanceStr) => {
+				RankCoinContract.balanceOf(user, (balanceStr) => {
 					
 					if (balanceStr.length > 18) {
 						let index = balanceStr.length - 18;
@@ -338,7 +341,7 @@ RUN(() => {
 			(next) => {
 				return () => {
 					
-					ContractController.getName(user, (name) => {
+					RankCoinContract.names(user, (name) => {
 						if (name !== '') {
 							nameWrapper.empty();
 							nameWrapper.append(SPAN({
@@ -360,7 +363,7 @@ RUN(() => {
 			() => {
 				return () => {
 					
-					ContractController.getMessage(user, (message) => {
+					RankCoinContract.messages(user, (message) => {
 						if (message !== '') {
 							item.append(DIV({
 								c : '메시지: ' + message
